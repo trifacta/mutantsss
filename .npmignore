@@ -1,0 +1,7 @@
+*.tgz
+.npmignore
+test/
+coverage/
+package/
+Makefile
+make-env.sh

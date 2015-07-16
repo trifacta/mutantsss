@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="text/javascript" src="../dist/mutantsss.min.js"></script>
+    <style type="text/css">
+
+html, body, #container {
+  width: 100%;
+  height: 100%;
+}
+
+#controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 2em;
+  padding-left: .5em;
+}
+
+#controls label input {
+  vertical-align: text-bottom;
+}
+
+#controls label span {
+  visibility: hidden;
+}
+
+#controls label:hover span {
+  visibility: visible;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#cells {
+  position: relative;
+  margin: 0 auto;
+}
+
+#cells .cell {
+  position: absolute;
+  box-sizing: border-box;
+  border-color: white;
+  border-style: solid;
+  border-width: 0 50% 50% 0;
+  background-color: black;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      <label>
+        <input id="cleverness" type="checkbox"/>
+        <span>Fastification &copy; &reg; &trade;</span>
+      </label>
+    </div>
+    <div id="container">
+      <div id="cells"></div>
+    </div>
+    <script type="text/javascript">
+
+var NUM_COLS = 100,
+    NUM_ROWS = 100,
+    DEFAULT_SIZE = 8,
+    LARGE_SIZE = 16;
+
+cells.style.height = (DEFAULT_SIZE * NUM_ROWS) - DEFAULT_SIZE + LARGE_SIZE + 'px';
+cells.style.width = (DEFAULT_SIZE * NUM_COLS) - DEFAULT_SIZE + LARGE_SIZE + 'px';
+
+var columnWidths = [],
+    rowHeights = [];
+
+function initCells() {
+  Array.prototype.slice.call(cells.children).forEach(function(cell) {
+    cells.removeChild(cell);
+  });
+  delete cells.dataset.mutantsssRoot;
+
+  columnWidths = [],
+  rowHeights = [];
+
+  for (var newCell, i = 0; i < NUM_ROWS; i++) {
+    rowHeights[i] = DEFAULT_SIZE;
+
+    for (var j = 0; j < NUM_COLS; j++) {
+      if (i === 0) {
+        columnWidths[j] = DEFAULT_SIZE;
+      }
+
+      cells.appendChild(newCell = document.createElement('div'));
+      newCell.setAttribute('class', ['cell', 'row-' + i, 'column-' + j].join(' '));
+    }
+  }
+}
+
+function positionCellsNaively(options) {
+  options = options || {};
+  options.widths = options.widths || {};
+  options.heights = options.heights || {};
+
+  var offset = 0;
+
+  for (var i = 0; i < NUM_ROWS; i++) {
+    var height = options.heights[i] || rowHeights[i];
+
+    Array.prototype.slice.call(document.querySelectorAll('.cell.row-' + i))
+        .forEach(function(cell) {
+          cell.style.top = offset + 'px';
+          cell.style.height = height + 'px';
+        });
+
+    offset += height;
+  }
+
+  offset = 0;
+
+  for (var j = 0; j < NUM_COLS; j++) {
+    var width = options.widths[j] || columnWidths[j];
+
+    Array.prototype.slice.call(document.querySelectorAll('.cell.column-' + j))
+        .forEach(function(cell) {
+          cell.style.left = offset + 'px';
+          cell.style.width = width + 'px';
+        });
+
+    offset += width;
+  }
+}
+
+function positionCellsCleverly(options) {
+  options = options || {};
+  options.widths = options.widths || {};
+  options.heights = options.heights || {};
+
+  var offset = 0,
+      $$$cope = $$$(cells);
+
+  for (var i = 0; i < NUM_ROWS; i++) {
+    var height = options.heights[i] || rowHeights[i];
+          
+    $$$cope.select('.cell.row-' + i).style({ top: offset + 'px', height: height + 'px' });
+    offset += height;
+  }
+
+  offset = 0;
+
+  for (var j = 0; j < NUM_COLS; j++) {
+    var width = options.widths[j] || columnWidths[j];
+          
+    $$$cope.select('.cell.column-' + j).style({ left: offset + 'px', width: width + 'px' });
+    offset += width;
+  }
+}
+
+function withinAnimationFrame(f) {
+  return function() {
+    return new Promise(function(resolve) {
+      f();
+      window.requestAnimationFrame(resolve);
+    });
+  };
+}
+
+// Do a bunch 'o' things to make devtools' timeline look pretty
+Promise.resolve()
+    .then(withinAnimationFrame(function() {
+      initCells();
+    }))
+    .then(withinAnimationFrame(function() {
+      positionCellsCleverly({
+        widths: { 10: LARGE_SIZE },
+        heights: { 10: LARGE_SIZE }
+      });
+    }))
+    .then(withinAnimationFrame(function() {
+      initCells();
+    }))
+    .then(withinAnimationFrame(function() {
+      positionCellsNaively({
+        widths: { 10: LARGE_SIZE },
+        heights: { 10: LARGE_SIZE }
+      });
+    }));
+
+// Now, set up some interactivity
+var positionCells = positionCellsNaively;
+
+cleverness.addEventListener('change', function(event) {
+  initCells();
+  (positionCells = cleverness.checked ? positionCellsCleverly : positionCellsNaively)({
+    widths: { 0: LARGE_SIZE },
+    heights: { 0: LARGE_SIZE }
+  });
+});
+
+cells.addEventListener('mouseover', function(event) {
+  var classes = event.target.getAttribute('class');
+
+  if (!classes) {
+    return;
+  }
+  
+  var match = classes.match(/row-(\d+) column-(\d+)/),
+      rowId = +match[1],
+      colId = +match[2],
+      options = { widths: {}, heights: {} };
+
+  options.heights[rowId] = LARGE_SIZE;
+  options.widths[colId] = LARGE_SIZE;
+
+  positionCells(options);
+});
+
+    </script>
+  </body>
+</html>
