@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mutant $tyle $heets from $paaaaaaaace</title>
+    <link rel="stylesheet" href="../node_modules/reveal.js/css/reveal.css"/>
+    <link rel="stylesheet" href="../node_modules/reveal.js/css/theme/beige.css"/>
+    <link rel="stylesheet" href="../node_modules/reveal.js/lib/css/zenburn.css"/>
+    <style type="text/css">
+pre.compact {
+  width: 100%;
+}
+pre.compact code {
+  font-size: 75%;
+}
+.reveal em {
+  font-weight: bold;
+  font-style: normal;
+  text-decoration: underline;
+}
+.reveal table tbody tr {
+  border: none;
+}
+.reveal table tbody tr td {
+  border: none;
+  padding: 0;
+  vertical-align: middle;
+}
+.reveal .slides section .deleted.visible.fragment {
+  opacity: 0.25;
+}
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>Mutant $tyle $heets from $paaaaaaaace</h1>
+          <code>http://github.com/trifacta/mutantsss</code>
+          <br/><br/>
+          <h3>aka &rarr; <code>$$$</code></h3>
+        </section>
+        <section>
+          <h2>Motivation</h2>
+          <img alt="Spreadsheet Resizing" src="spreadsheet_resize.gif"/>
+          <p class="fragment disappearing fade-out" data-fragment-index="1">Doing this with HTML/CSS is Easy</p>
+          <p class="fragment deleted" data-fragment-index="1">
+            <del>Doing this with HTML/CSS is Easy</del>
+          </p>
+          <p class="fragment" data-fragment-index="1">
+            Doing this
+            <em>quickly</em>
+            with HTML/CSS is
+            <em>Hard&trade;</em>
+          </p>
+        </section>
+        <section>
+          <h2>Problem</h2>
+          <h3>"Multi-class addressing"</h3>
+          <pre><code data-trim class="html">
+<div id="cells">
+  <div class="cell row-0 column-0">...</div>
+  <div class="cell row-0 column-1">...</div>
+  ...
+  <div class="cell row-99 column-98">...</div>
+  <div class="cell row-99 column-99">...</div>
+</div>
+          </code></pre>
+          <h3>Chicken, meet egg (&#x0ca0;_&#x0ca0;)</h3>
+          <pre><code data-trim class="css">
+...
+.row-23    {  top: 230px; height: 32px; } /* ??? */
+...
+.column-42 { left: 420px;  width: 24px; } /* ??? */
+...
+          </code></pre>
+        </section>
+        <section>
+          <section>
+            <h2>Naive</h2>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <pre class="compact"><code data-trim class="js">
+// O(#rows)
+for (var i = 0; i < NUM_ROWS; i++) {
+  ...
+
+  // O(#columns)
+  cells.querySelectorAll('.cell.row-' + i)
+      .forEach(function(cell) {
+        cell.style.top = offset + 'px';
+        cell.style.height = height + 'px';
+      });
+}
+                    </code></pre>
+                  </td>
+                  <td>&nbsp;&rarr;&nbsp;</td>
+                  <td>
+                    <pre class="compact"><code data-trim class="html">
+<div id="cells">
+  <div class="..." style="top:0px;height:10px;">...</div>
+  <div class="..." style="top:0px;height:10px;">...</div>
+  ...
+  <div class="..." style="top:1000px;height:14px;">...</div>
+  <div class="..." style="top:1000px;height:14px;">...</div>
+</div>
+                    </code></pre>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <code>O(n<sup>2</sup>)</code>
+          </section>
+          <section>
+            <h2>...even with D3</h2>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <pre class="compact"><code data-trim class="js">
+// O(#rows)
+for (var i = 0; i < NUM_ROWS; i++) {
+  ...
+
+  // O(#columns)
+  d3.selectAll('.cell.row-' + i).style({
+    'top': function(d, i) {
+      return offset + 'px';
+    },
+    'height': function(d, i) {
+      return height + 'px';
+    }
+  });
+}
+                    </code></pre>
+                  </td>
+                  <td>&nbsp;&rarr;&nbsp;</td>
+                  <td>
+                    <pre class="compact"><code data-trim class="html">
+<div id="cells">
+  <div class="..." style="top:0px;height:10px;">...</div>
+  <div class="..." style="top:0px;height:10px;">...</div>
+  ...
+  <div class="..." style="top:1000px;height:14px;">...</div>
+  <div class="..." style="top:1000px;height:14px;">...</div>
+</div>
+                    </code></pre>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2><code>$$$</code></h2>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <pre class="compact"><code data-trim class="js">
+var $$$ = require('mutantsss'),
+    $$$cope = $$$(cells);
+                    </code></pre>
+                  </td>
+                  <td>&nbsp;&rarr;&nbsp;</td>
+                  <td>
+                  <pre class="compact"><code data-trim class="html">
+<style data-mutantsss-id="1"></style>
+...
+<div id="cells" data-mutantsss-root="1">...</div>
+                    </code></pre>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <pre class="compact"><code data-trim class="js">
+// O(#rows)
+for (var i = 0; i < NUM_ROWS; i++) {
+  ...
+        
+  // O(1)
+  $$$cope.select('.cell.row-' + i).style({
+    top: offset + 'px',
+    height: height + 'px'
+  });
+}
+                    </code></pre>
+                  </td>
+                  <td>&nbsp;&rarr;&nbsp;</td>
+                  <td>
+                    <pre class="compact"><code data-trim class="css">
+[data-mutantsss-root="1"] .cell.row-0 {
+  top: 0px;
+  height: 10px;
+}
+...
+[data-mutantsss-root="1"] .cell.row-99 {
+  top: 1000px;
+  height: 14px;
+}
+                    </code></pre>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <code>O(n)</code>
+          </section>
+          <section>
+            <h2>But...how?</h2>
+            <pre><code data-trim class="js">
+var newStyles = document.createElement('style');
+document.head.appendChild(newStyles);
+            </code></pre>
+            <h3>&darr;</h3>
+            <pre><code data-trim class="js">
+newStyles.sheet.deleteRule(...);
+newStyles.sheet.insertRule(...);
+            </code></pre>
+          </section>
+        </section>
+        <section>
+          <h2>&asymp; 2,000% Speedup!</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <center><h3>Naive</h3></center>
+                  <div><center><code>&asymp;140ms</code></center></div>
+                  <img alt="Naive Time" src="naive_time.png"/>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                  <center><h3><code>$$$</code></h3></center>
+                  <div><center><code>&asymp;7ms</code></center></div>
+                  <img alt="Clever Time" src="clever_time.png"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h4><a href="benchmark/index.html" target="_blank">(Demo)</a></h4>
+        </section>
+        <section>
+          <img alt="GitHub" src="github.png"/>
+          <h3>&darr;</h3>
+          <code>npm install mutantsss</code>
+        </section>
+<!--
+
+Hi there, source-reader! Fancy meeting you here...
+
+Interested in what you see?
+We'd love to hear from you! => http://www.trifacta.com/company/contact-us/
+...or even work with you... => http://www.trifacta.com/company/careers/
+
+        <section>
+          <section>
+            <h1>Appendix</h1>
+            <h1>&darr;</h1>
+          </section>
+          <section>
+            <h2>Oooooh...</h2>
+            <code>npm install karma</code>
+            <pre><code data-trim class="js">
+module.exports = function(config) {
+  config.set({
+    basePath: '../',
+    frameworks: ['mocha', 'browserify'],
+    browserify: { watch: true },
+    files: ['test/*.js'],
+    preprocessors: { 'test/*.js': 'browserify' },
+    reporters: ['progress'],
+    browsers: ['PhantomJS']
+  });
+};
+            </code></pre>
+            <img alt="Karma" src="karma.png"/>
+          </section>
+          <section>
+            <h2>...ahhhhh...</h2>
+            <code>npm install karma-coverage</code>
+            <pre><code data-trim class="js">
+module.exports = function(config) {
+  require('./karma.conf')({ set: function(settings) {
+    settings.browserify.transform = [require('browserify-istanbul')];
+    settings.reporters.push('coverage');
+    settings.coverageReporter = { type: 'lcov' };
+    config.set(settings);
+  } });
+};
+            </code></pre>
+            <img alt="Coverage" src="coverage.png"/>
+          </section>
+          <section>
+            <code>git clone git@github.com:trifacta/mutantsss.git</code>
+          </section>
+        </section>
+
+-->
+        <section>
+          <h1>Fin.</h1>
+        </section>
+      </div>
+    </div>
+    <script type="text/javascript" src="../node_modules/reveal.js/lib/js/head.min.js"></script>
+    <script type="text/javascript" src="../node_modules/reveal.js/js/reveal.js"></script>
+    <script type="text/javascript">
+Reveal.initialize({
+  history: true,
+  progress: false,
+  transition: 'slide',
+  transitionSpeed: 'fast',
+  dependencies: [{
+    src: '../node_modules/reveal.js/plugin/highlight/highlight.js',
+    async: true,
+    condition: function() {
+      return !!document.querySelector('pre code');
+    },
+    callback: function() {
+      hljs.initHighlightingOnLoad();
+    }
+  }]
+});
+Reveal.addEventListener('fragmenthidden', function(event) {
+  if (/disappearing/.test(event.fragment.getAttribute('class'))) {
+    event.fragment.style.display = 'inline-block';
+  }
+});
+Reveal.addEventListener('fragmentshown', function(event) {
+  if (/disappearing/.test(event.fragment.getAttribute('class'))) {
+    event.fragment.style.display = 'none';
+  }
+});
+    </script>
+  </body>
+</html>

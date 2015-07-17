@@ -1,0 +1,13 @@
+*
+!.gitignore
+!index.html
+!clever_time.png
+!naive_time.png
+!karma.png
+!github.png
+!coverage.png
+!spreadsheet_resize.gif
+!dist/
+!dist/mutantsss.min.js
+!benchmark/
+!benchmark/index.html
