@@ -4,6 +4,10 @@
   "description": "Mutant $tyle $heets from $pace is a tool for efficient programmatic definition & management of CSS rules scoped to specific DOM elements",
   "main": "lib/index.js",
   "author": "Eli Marschner <emarschner@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trifacta/mutantsss"
+  },
   "devDependencies": {
     "browserify": "^10.2.6",
     "browserify-istanbul": "^0.2.1",
