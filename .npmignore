@@ -1,6 +1,7 @@
 *.tgz
 .npmignore
 test/
+benchmark/
 coverage/
 package/
 Makefile
