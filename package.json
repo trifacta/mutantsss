@@ -1,6 +1,6 @@
 {
   "name": "mutantsss",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mutant $tyle $heets from $pace is a tool for efficient programmatic definition & management of CSS rules scoped to specific DOM elements",
   "main": "lib/index.js",
   "author": "Eli Marschner <emarschner@gmail.com>",
@@ -13,20 +13,20 @@
     "test": "make coverage"
   },
   "devDependencies": {
-    "browserify": "^10.2.6",
+    "browserify": "^11.0.1",
     "browserify-istanbul": "^0.2.1",
     "chai": "^3.0.0",
     "istanbul": "^0.3.17",
-    "karma": "^0.12.37",
+    "karma": "^0.13.9",
     "karma-browserify": "^4.2.1",
-    "karma-coverage": "^0.4.2",
+    "karma-coverage": "^0.5.0",
     "karma-coveralls": "^1.1.2",
     "karma-mocha": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.0",
     "mocha": "^2.2.5",
     "phantomjs": "^1.9.17",
     "serve": "^1.4.0",
-    "uglify-js": "^2.4.23"
+    "uglify-js": "^2.4.24"
   },
   "dependencies": {
     "mutationobserver-shim": "^0.3.1"
